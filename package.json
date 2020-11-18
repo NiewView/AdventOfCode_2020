@@ -1,0 +1,11 @@
+{
+  "name": "advent-of-code_2020",
+  "version": "1.0.0",
+  "repository": "https://github.com/NiewView/AdventOfCode_2020.git",
+  "author": "NiewView",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "deno run --allow-read ./demo/index.ts"
+  }
+}
