@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "deno run --allow-read ./demo/index.ts"
+    "start": "deno run --allow-read ./runChallenges.ts",
+    "test": "deno test"
   }
 }
