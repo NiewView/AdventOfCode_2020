@@ -36,10 +36,6 @@ jobs:
           YEAR: "${{ steps.current-time.outputs.year }}"
           DAY: "${{ steps.current-time.outputs.day }}"
         run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
-      - name: Set current year as env variable
-        run: echo "::set-env name=YEAR::$('%Y')"
-      - name: Set current day as env variable
-        run: echo "::set-env name=DAY::$('%d')"
       - name: Crete dir with files in repo
         run: yarn loadChallenge --year $YEAR --day $DAY
       - run: |
