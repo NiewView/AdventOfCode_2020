@@ -6,7 +6,7 @@
 name: Load Challenge from Advent Of Code
 
 on:
-  push:	  schedule:
+  push:
     branches: [master]
   # schedule:
   #   - cron: "2 11 1-24 12 *"
