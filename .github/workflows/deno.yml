@@ -24,8 +24,8 @@ jobs:
         os: [macOS-latest, windows-latest, ubuntu-latest]
 
     steps:
-      - name: Setup repo
-      - uses: actions/checkout@v2
+      - name: Git Checkout Deno Module
+        uses: actions/checkout@v2
       - run: |
           date > generated.txt
           git config user.name github-actions
