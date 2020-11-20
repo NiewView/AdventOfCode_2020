@@ -6,8 +6,10 @@
 name: Load Challenge from Advent Of Code
 
 on:
-  schedule:
-    - cron: "2 11 1-24 12 *"
+  push:	  schedule:
+    branches: [master]
+  # schedule:
+  #   - cron: "2 11 1-24 12 *"
 
 jobs:
   test:
@@ -20,8 +22,12 @@ jobs:
         uses: denolib/setup-deno@v2
         with:
           deno-version: 1.5.3
+      - name: Set current year as env variable
+        run: echo "::set-env name=YEAR::$('%Y')"
+      - name: Set current day as env variable
+        run: echo "::set-env name=DAY::$('%d')"
       - name: Crete dir with files in repo
-        run: yarn loadChallenge --year 2019 --day 1
+        run: yarn loadChallenge --year $YEAR --day $DAY
       - run: |
           git config user.name NiewView
           git config user.email tom.eckardt.it@gmail.com
