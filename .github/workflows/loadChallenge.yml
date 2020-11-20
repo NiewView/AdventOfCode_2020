@@ -6,7 +6,7 @@
 name: Load Challenge from Advent Of Code
 
 on:
-  push:	  schedule:
+  push:
     branches: [master]
   # schedule:
   #   - cron: "2 11 1-24 12 *"
@@ -22,6 +22,20 @@ jobs:
         uses: denolib/setup-deno@v2
         with:
           deno-version: 1.5.3
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+          utcOffset: "+08:00"
+      - name: Use current time
+        env:
+          TIME: "${{ steps.current-time.outputs.time }}"
+          R_TIME: "${{ steps.current-time.outputs.readableTime }}"
+          F_TIME: "${{ steps.current-time.outputs.formattedTime }}"
+          YEAR: "${{ steps.current-time.outputs.year }}"
+          DAY: "${{ steps.current-time.outputs.day }}"
+        run: echo $TIME $R_TIME $F_TIME $YEAR $DAY
       - name: Set current year as env variable
         run: echo "::set-env name=YEAR::$('%Y')"
       - name: Set current day as env variable
