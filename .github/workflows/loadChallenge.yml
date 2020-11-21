@@ -26,7 +26,7 @@ jobs:
         with:
           format: YYYYMMDD-HH
           utcOffset: "+01:00"
-      - name: Crete dir with files in repo
+      - name: Create dir with files in repo
         run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }}
       - run: |
           git config user.name NiewView
