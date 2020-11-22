@@ -27,6 +27,10 @@ const saveReadMe = (html) => {
     /(---.*---)/g,
     "\n\n\n$1\n================================================\n\n"
   );
+  text = text.replace(
+    /^/,
+    "---\n  title: Someone just pushed\n  assignees: NiewView\n  labels: bug, enhancement\n  ---"
+  );
   text = text.replace(/^\n*/g, "");
 
   Deno.writeTextFileSync(`./${year}/${day}/ReadMe.md`, text);
