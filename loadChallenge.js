@@ -27,14 +27,14 @@ const saveReadMe = (html) => {
     "\n\n\n$1\n================================================\n\n"
   );
 
-  const title = text.match(/---(.*)---/)[1];
+  const title = `${year} ${text.match(/---(.*)---/)[1].replace(":", " -")}`;
   const assignees = ["NiewView"];
   const labels = ["adventofcode"];
 
   text = text.replace(
     /^/,
     `---
-title: ${year}/${day} - ${title}
+title: ${title}
 assignees: ${assignees.join(", ")}
 labels: ${labels.join(", ")}
 ---`
