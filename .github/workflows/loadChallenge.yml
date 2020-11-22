@@ -44,5 +44,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: /2019/1/ReadMe.md
+          filename: /issue.md
           # filename: /${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.day }}/ReadMe.md
