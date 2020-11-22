@@ -8,6 +8,6 @@
   "scripts": {
     "start": "deno run --allow-read ./runChallenges.ts",
     "test": "deno test",
-    "loadChallenge": "deno run --allow-net --allow-write --allow-read --unstable ./loadChallenge.js"
+    "loadChallenge": "deno run --allow-net --allow-write --allow-read --allow-env --unstable ./loadChallenge.js"
   }
 }

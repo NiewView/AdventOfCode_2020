@@ -6,6 +6,9 @@ import {
 
 import jsdom from "https://dev.jspm.io/jsdom";
 import TurndownService from "https://jspm.dev/turndown@7.0.0";
+import "https://deno.land/x/dotenv/load.ts";
+
+console.log();
 
 const saveReadMe = (html) => {
   const dom = new jsdom.JSDOM(html);
@@ -46,8 +49,7 @@ const fetchHtml = async (year, day) => {
     {
       method: "GET",
       headers: {
-        cookie:
-          "session=53616c7465645f5f469828ff513d0c00707f01fa3c1d31251bbffed830198fb7584e5c982c31e2f991009af04f1b7fe9",
+        cookie: `session=${Deno.env.get("SESSION_TOKEN")}`,
       },
     }
   );
@@ -73,16 +75,16 @@ if (!existsSync(dirPath) || partTwo) {
   const partTwoExists =
     existsSync(`${dirPath}/ReadMe.md`) &&
     Deno.readTextFileSync(`./${year}/${day}/ReadMe.md`).includes("Part Two");
+  const inputExists = existsSync(`${dirPath}/input.txt`);
 
-  if (!partTwo) {
+  if (!partTwo || !partTwoExists) {
     fetchHtml(year, day);
-    fetchInput(year, day);
-  } else {
-    if (!partTwoExists) {
-      fetchHtml(year, day);
-    } else {
-      console.log("Part Two is already loaded for this day.");
+
+    if (!inputExists) {
+      fetchInput(year, day);
     }
+  } else {
+    console.log("Part Two is already loaded for this day.");
   }
 } else {
   console.log("But there is already data present for this day.");
