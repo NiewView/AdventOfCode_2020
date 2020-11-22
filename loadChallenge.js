@@ -5,7 +5,6 @@ import {
 } from "https://deno.land/std@0.74.0/fs/mod.ts";
 
 import jsdom from "https://dev.jspm.io/jsdom";
-import TurndownService from "https://jspm.dev/turndown@7.0.0";
 import "https://deno.land/x/dotenv/load.ts";
 
 console.log();
@@ -28,7 +27,7 @@ const saveReadMe = (html) => {
     "\n\n\n$1\n================================================\n\n"
   );
 
-  const title = text.match(/---(.*)---/g)[1];
+  const title = text.match(/---(.*)---/)[1];
   const assignees = ["NiewView"];
   const labels = ["adventofcode"];
 
@@ -46,13 +45,14 @@ labels: ${labels.join(", ")}
 };
 
 const fetchInput = async (year, day) => {
-  const headers = {};
+  const headers = new Headers();
   if (Deno.env.get("SESSION_TOKEN") != null) {
-    headers.cookie = `session=${Deno.env.get("SESSION_TOKEN")}`;
+    headers.set("Cookie", `session=${Deno.env.get("SESSION_TOKEN")}`);
   }
+
   const inputResponse = await fetch(
     `https://adventofcode.com/${year}/day/${day}/input`,
-    headers
+    { headers }
   );
   const input = await inputResponse.text();
 
@@ -62,17 +62,14 @@ const fetchInput = async (year, day) => {
 };
 
 const fetchHtml = async (year, day) => {
-  const headers = {};
+  const headers = new Headers();
   if (Deno.env.get("SESSION_TOKEN") != null) {
-    headers.cookie = `session=${Deno.env.get("SESSION_TOKEN")}`;
+    headers.set("Cookie", `session=${Deno.env.get("SESSION_TOKEN")}`);
   }
 
   const htmlResponse = await fetch(
     `https://adventofcode.com/${year}/day/${day}`,
-    {
-      method: "GET",
-      headers,
-    }
+    { headers }
   );
   const html = await htmlResponse.text();
 
@@ -102,7 +99,7 @@ if (!existsSync(dirPath) || partTwo) {
     fetchHtml(year, day);
 
     if (!inputExists) {
-      fetchInput(year, day);
+      await fetchInput(year, day);
     }
   } else {
     console.log("Part Two is already loaded for this day.");
