@@ -27,9 +27,18 @@ const saveReadMe = (html) => {
     /(---.*---)/g,
     "\n\n\n$1\n================================================\n\n"
   );
+
+  const title = text.match(/---(.*)---/g)[1];
+  const assignees = ["NiewView"];
+  const labels = ["adventofcode"];
+
   text = text.replace(
     /^/,
-    "---\ntitle: Someone just pushed\nassignees: NiewView\nlabels: bug, enhancement\n---"
+    `---
+title: ${year}/${day} - ${title}
+assignees: ${assignees.join(", ")}
+labels: ${labels.join(", ")}
+---`
   );
   text = text.replace(/^\n*/g, "");
 
@@ -80,8 +89,6 @@ console.log(
     partTwo ? ", Part 2" : ""
   }`
 );
-
-console.log(Deno.env.get("SESSION_TOKEN"));
 
 if (!existsSync(dirPath) || partTwo) {
   ensureDirSync(dirPath);
