@@ -81,6 +81,8 @@ console.log(
   }`
 );
 
+console.log(Deno.env.get("SESSION_TOKEN"));
+
 if (!existsSync(dirPath) || partTwo) {
   ensureDirSync(dirPath);
 

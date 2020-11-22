@@ -29,6 +29,8 @@ jobs:
           format: YYYYMMDD-HH
           utcOffset: "+01:00"
       - name: Create dir with files in repo
+        env:
+          SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
         run: yarn loadChallenge --year 2019 --day 1
         # run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }}
       - run: |
