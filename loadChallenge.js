@@ -37,8 +37,13 @@ const saveReadMe = (html) => {
 };
 
 const fetchInput = async (year, day) => {
+  const headers = {};
+  if (Deno.env.get("SESSION_TOKEN") != null) {
+    headers.cookie = `session=${Deno.env.get("SESSION_TOKEN")}`;
+  }
   const inputResponse = await fetch(
-    `https://adventofcode.com/${year}/day/${day}/input`
+    `https://adventofcode.com/${year}/day/${day}/input`,
+    headers
   );
   const input = await inputResponse.text();
 
@@ -48,13 +53,16 @@ const fetchInput = async (year, day) => {
 };
 
 const fetchHtml = async (year, day) => {
+  const headers = {};
+  if (Deno.env.get("SESSION_TOKEN") != null) {
+    headers.cookie = `session=${Deno.env.get("SESSION_TOKEN")}`;
+  }
+
   const htmlResponse = await fetch(
     `https://adventofcode.com/${year}/day/${day}`,
     {
       method: "GET",
-      headers: {
-        cookie: `session=${Deno.env.get("SESSION_TOKEN")}`,
-      },
+      headers,
     }
   );
   const html = await htmlResponse.text();
