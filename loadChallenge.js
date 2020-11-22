@@ -7,8 +7,6 @@ import {
 import jsdom from "https://dev.jspm.io/jsdom";
 import "https://deno.land/x/dotenv/load.ts";
 
-console.log();
-
 const saveReadMe = (html) => {
   const dom = new jsdom.JSDOM(html);
   const window = dom.window;
@@ -26,6 +24,13 @@ const saveReadMe = (html) => {
     /(---.*---)/g,
     "\n\n\n$1\n================================================\n\n"
   );
+  text = text.replace(/^\n*/g, "");
+
+  Deno.writeTextFileSync(`./${year}/${day}/ReadMe.md`, text);
+};
+
+const saveIssue = (year, day, partTwo) => {
+  let text = Deno.readTextFileSync(`./${year}/${day}/ReadMe.md`);
 
   const title = `${year} ${text.match(/---(.*)---/)[1].replace(":", " -")}`;
   const assignees = ["NiewView"];
@@ -37,11 +42,14 @@ const saveReadMe = (html) => {
 title: ${title}
 assignees: ${assignees.join(", ")}
 labels: ${labels.join(", ")}
----`
+---\n\n`
   );
-  text = text.replace(/^\n*/g, "");
 
-  Deno.writeTextFileSync(`./${year}/${day}/ReadMe.md`, text);
+  if (partTwo) {
+    text = `--- Part Two${text.split("--- Part Two")[1]}`;
+  }
+
+  Deno.writeTextFileSync("./issue.md", text);
 };
 
 const fetchInput = async (year, day) => {
@@ -96,7 +104,8 @@ if (!existsSync(dirPath) || partTwo) {
   const inputExists = existsSync(`${dirPath}/input.txt`);
 
   if (!partTwo || !partTwoExists) {
-    fetchHtml(year, day);
+    await fetchHtml(year, day);
+    saveIssue(year, day, partTwo);
 
     if (!inputExists) {
       await fetchInput(year, day);
@@ -108,4 +117,5 @@ if (!existsSync(dirPath) || partTwo) {
   console.log("But there is already data present for this day.");
   const html = Deno.readTextFileSync(`./${year}/${day}/index.html`);
   saveReadMe(html);
+  saveIssue(year, day, partTwo);
 }
