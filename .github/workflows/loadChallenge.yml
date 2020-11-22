@@ -6,10 +6,10 @@
 name: Load Challenge from Advent Of Code
 
 on:
-  push:
-    branches: [master]
-  # schedule:
-  #   - cron: "1 6 1-24 12 *"
+  # push:
+  #   branches: [master]
+  schedule:
+    - cron: "1 6 1-24 12 *"
 
 jobs:
   test:
@@ -32,7 +32,6 @@ jobs:
         env:
           SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
         run: yarn loadChallenge --year 2019 --day 1
-        # run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }}
       - run: |
           git config user.name NiewView
           git config user.email tom.eckardt.it@gmail.com
@@ -45,4 +44,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           filename: /issue.md
-          # filename: /${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.day }}/ReadMe.md
