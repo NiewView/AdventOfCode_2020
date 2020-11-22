@@ -29,7 +29,7 @@ const saveReadMe = (html) => {
   );
   text = text.replace(
     /^/,
-    "---\n  title: Someone just pushed\n  assignees: NiewView\n  labels: bug, enhancement\n  ---"
+    "---\ntitle: Someone just pushed\nassignees: NiewView\nlabels: bug, enhancement\n---"
   );
   text = text.replace(/^\n*/g, "");
 
