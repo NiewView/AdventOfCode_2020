@@ -29,7 +29,8 @@ jobs:
           format: YYYYMMDD-HH
           utcOffset: "+01:00"
       - name: Create dir with files in repo
-        run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }}
+        run: yarn loadChallenge --year 2019 --day 1
+        # run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }}
       - run: |
           git config user.name NiewView
           git config user.email tom.eckardt.it@gmail.com
@@ -41,4 +42,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: /${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.day }}/ReadMe.md
+          filename: /2019/1/ReadMe.md
+          # filename: /${{ steps.current-time.outputs.year }}/${{ steps.current-time.outputs.day }}/ReadMe.md
