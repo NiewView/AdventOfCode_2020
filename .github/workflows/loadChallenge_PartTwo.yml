@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Load Challenge from Advent Of Code
+name: Load Challenge Part 2 from Advent Of Code
 
 on:
   push:
