@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    if: ${{ contains(join(github.event.commits.*.message, ', '), 'part1 \#') }}
+    # if: ${{ contains(join(github.event.commits.*.message, ', '), 'part1 \#') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +30,8 @@ jobs:
         run: yarn temp
       - name: Get color
         run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+      - name: Get commit message
+        run: echo "The selected color is ${{ join(github.event.commits.*.message, ', ') }}"
       # - name: Create dir with files in repo
       #   env:
       #     SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
