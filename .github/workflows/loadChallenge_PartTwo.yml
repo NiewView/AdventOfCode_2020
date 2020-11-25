@@ -6,11 +6,11 @@
 name: Load Challenge from Advent Of Code
 
 on:
-  issues:
-    types: [closed]
+  push:
 
 jobs:
   test:
+    if: ${{ contains(join(github.event.commits.*.message, ', '), 'part1 #') }}
     runs-on: ubuntu-latest
 
     steps:
