@@ -5,11 +5,7 @@
 
 name: Load Challenge Part 2 from Advent Of Code
 
-on:
-  push:
-    branches:
-      - master
-        
+on:       
   workflow_dispatch:
     inputs:
       alwaysrun: 'true'
