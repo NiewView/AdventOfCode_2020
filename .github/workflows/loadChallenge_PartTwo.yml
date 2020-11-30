@@ -5,7 +5,10 @@
 
 name: Load Challenge Part 2 from Advent Of Code
 
-on:       
+on:
+  push:
+    branches:
+      - master    
   workflow_dispatch:
 
 jobs:
