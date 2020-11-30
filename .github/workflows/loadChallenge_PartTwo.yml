@@ -8,12 +8,11 @@ name: Load Challenge Part 2 from Advent Of Code
 on:
   push:
     branches:
-      - master    
-  workflow_dispatch:
+      - master     
 
 jobs:
   test:
-    if: ${{ github.event.inputs.alwaysrun =='true' || github.event.commits == contains(join(github.event.commits.*.message, ', '), 'part1 \#') == 'true' }}
+    if: ${{ github.event.commits == contains(join(github.event.commits.*.message, ', '), 'part1 \#') == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
