@@ -7,10 +7,15 @@ name: Load Challenge Part 2 from Advent Of Code
 
 on:
   push:
+    branches:
+      - master
+  on: workflow_dispatch
+    inputs:
+      alwaysrun: true
 
 jobs:
   test:
-    if: ${{ contains(join(github.event.commits.*.message, ', '), 'part1 \#') == 'true' }}
+    if: ${{ github.event.inputs.alwaysrun =='true' || github.event.commits == contains(join(github.event.commits.*.message, ', '), 'part1 \#') == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -26,26 +31,13 @@ jobs:
         with:
           format: YYYYMMDD-HH
           utcOffset: "+01:00"
-      - name: Set selected color
-        run: yarn temp
-      - name: Get color
-        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
-      - name: Get commit message
-        run: echo "The selected color is ${{ join(github.event.commits.*.message, ', ') }}"
-      # - name: Create dir with files in repo
-      #   env:
-      #     SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-      #   run: yarn loadChallenge --year 2019 --day 1 --partTwo
-      #   # run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }} --partTwo
-      # - run: |
-      #     git config user.name NiewView
-      #     git config user.email tom.eckardt.it@gmail.com
-      #     git add .
-      #     git commit -m "loaded new challenge from advent of code"
-      #     git push
-      # - name: Create Issue
-      #   uses: JasonEtco/create-an-issue@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     filename: /issue.md
+      - name: Create dir with files in repo
+        env:
+          SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+        run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }} --partTwo
+      - run: |
+          git config user.name NiewView
+          git config user.email tom.eckardt.it@gmail.com
+          git add .
+          git commit -m "loaded new challenge from advent of code"
+          git push
