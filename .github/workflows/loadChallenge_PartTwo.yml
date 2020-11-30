@@ -7,8 +7,6 @@ name: Load Challenge Part 2 from Advent Of Code
 
 on:       
   workflow_dispatch:
-    inputs:
-      alwaysrun: 'true'
 
 jobs:
   test:
