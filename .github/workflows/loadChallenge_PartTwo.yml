@@ -31,7 +31,7 @@ jobs:
       - name: Create dir with files in repo
         env:
           SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-        run: yarn loadChallenge --year ${{ github.event.inputs.year }} --day ${{ ${{ github.event.inputs.day }} }} --partTwo
+        run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }} --partTwo
       - run: |
           git config user.name NiewView
           git config user.email tom.eckardt.it@gmail.com
