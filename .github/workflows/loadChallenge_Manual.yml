@@ -6,20 +6,16 @@
 name: Load Challenge Manually
 
 on:
-  schedule:
-    - cron: "1 6 1-24 12 *"
-
-on: 
   workflow_dispatch:
     inputs:
       year:
-        description: 'Year'     
+        description: "Year"
         required: true
-        default: '2020'
+        default: "2020"
       day:
-        description: 'Day'     
+        description: "Day"
         required: true
-        default: '1'
+        default: "1"
 
 jobs:
   test:
