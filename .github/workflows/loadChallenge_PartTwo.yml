@@ -9,9 +9,10 @@ on:
   push:
     branches:
       - master
+        
   workflow_dispatch:
     inputs:
-      alwaysrun: true
+      alwaysrun: 'true'
 
 jobs:
   test:
