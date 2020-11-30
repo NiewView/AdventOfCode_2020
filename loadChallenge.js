@@ -7,7 +7,7 @@ import {
 import jsdom from "https://dev.jspm.io/jsdom";
 import "https://deno.land/x/dotenv/load.ts";
 
-const saveReadMe = (html) => {
+function saveReadMe(year, day, html) {
   const dom = new jsdom.JSDOM(html);
   const window = dom.window;
   const document = window.document;
@@ -27,9 +27,9 @@ const saveReadMe = (html) => {
   text = text.replace(/^\n*/g, "");
 
   Deno.writeTextFileSync(`./${year}/${day}/ReadMe.md`, text);
-};
+}
 
-const saveIssue = (year, day, partTwo) => {
+function saveIssue(year, day) {
   let text = Deno.readTextFileSync(`./${year}/${day}/ReadMe.md`);
 
   const title = `${year} ${text.match(/---(.*)---/)[1].replace(":", " -")}`;
@@ -45,14 +45,22 @@ labels: ${labels.join(", ")}
 ---\n\n`
   );
 
-  if (partTwo) {
-    text = `--- Part Two${text.split("--- Part Two")[1]}`;
-  }
-
   Deno.writeTextFileSync("./issue.md", text);
-};
+}
 
-const fetchInput = async (year, day) => {
+function copyTemplateFiles(year, day) {
+  const destIndex = `./${year}/${day}/index.ts`;
+  const destTest = `./${year}/${day}/index.test.ts`;
+
+  if (!existsSync(destIndex))
+    Deno.copyFileSync("./template/index.ts", destIndex);
+  if (!existsSync(destTest))
+    Deno.copyFileSync("./template/index.test.ts", destTest);
+
+  console.log("Copied templates if necessary.");
+}
+
+async function fetchInput(year, day) {
   const headers = new Headers();
   if (Deno.env.get("SESSION_TOKEN") != null) {
     headers.set("Cookie", `session=${Deno.env.get("SESSION_TOKEN")}`);
@@ -67,9 +75,9 @@ const fetchInput = async (year, day) => {
   console.log(`Fetched input`);
 
   Deno.writeTextFileSync(`./${year}/${day}/input.txt`, input);
-};
+}
 
-const fetchHtml = async (year, day) => {
+async function fetchHtmlAndSaveReadMe(year, day) {
   const headers = new Headers();
   if (Deno.env.get("SESSION_TOKEN") != null) {
     headers.set("Cookie", `session=${Deno.env.get("SESSION_TOKEN")}`);
@@ -83,39 +91,51 @@ const fetchHtml = async (year, day) => {
 
   console.log(`Fetched HTML`);
 
-  Deno.writeTextFileSync(`./${year}/${day}/index.html`, html);
-  saveReadMe(html);
-};
+  // Deno.writeTextFileSync(`./${year}/${day}/index.html`, html);
+  saveReadMe(year, day, html);
+}
 
-const { year, day, partTwo } = parse(Deno.args);
-const dirPath = `./${year}/${day}`;
-console.log(
-  `Load challenge from day ${day} in the year ${year}${
-    partTwo ? ", Part 2" : ""
-  }`
-);
+const execute = async (args) => {
+  const { year, day, partTwo, force } = args;
+  const dirPath = `./${year}/${day}`;
+  console.log(
+    `Load challenge from day ${day} in the year ${year}${
+      partTwo ? ", Part 2" : ""
+    }`
+  );
 
-if (!existsSync(dirPath) || partTwo) {
-  ensureDirSync(dirPath);
+  if (!existsSync(dirPath) || force) {
+    ensureDirSync(dirPath);
+    const inputExists = existsSync(`${dirPath}/input.txt`);
+    await fetchHtmlAndSaveReadMe(year, day);
 
-  const partTwoExists =
-    existsSync(`${dirPath}/ReadMe.md`) &&
-    Deno.readTextFileSync(`./${year}/${day}/ReadMe.md`).includes("Part Two");
-  const inputExists = existsSync(`${dirPath}/input.txt`);
-
-  if (!partTwo || !partTwoExists) {
-    await fetchHtml(year, day);
+    copyTemplateFiles(year, day);
     saveIssue(year, day, partTwo);
 
     if (!inputExists) {
       await fetchInput(year, day);
     }
-  } else {
-    console.log("Part Two is already loaded for this day.");
+    return;
   }
-} else {
-  console.log("But there is already data present for this day.");
-  const html = Deno.readTextFileSync(`./${year}/${day}/index.html`);
-  saveReadMe(html);
-  saveIssue(year, day, partTwo);
-}
+
+  if (partTwo) {
+    ensureDirSync(dirPath);
+    const partTwoExists =
+      existsSync(`${dirPath}/ReadMe.md`) &&
+      Deno.readTextFileSync(`./${year}/${day}/ReadMe.md`).includes("Part Two");
+    const inputExists = existsSync(`${dirPath}/input.txt`);
+
+    if (partTwoExists) {
+      console.log("Part Two is already loaded for this day.");
+      return;
+    }
+
+    await fetchHtmlAndSaveReadMe(year, day);
+    if (!inputExists) {
+      await fetchInput(year, day);
+    }
+    return;
+  }
+};
+
+await execute(parse(Deno.args));

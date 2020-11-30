@@ -3,16 +3,26 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Load Challenge Part 2
+name: Load Challenge Manually
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: "1 6 1-24 12 *"
+
+on: 
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Year'     
+        required: true
+        default: '2020'
+      day:
+        description: 'Day'     
+        required: true
+        default: '1'
 
 jobs:
   test:
-    if: ${{ github.event.commits == contains(join(github.event.commits.*.message, ', '), 'part1 \#') == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,16 +32,10 @@ jobs:
         uses: denolib/setup-deno@v2
         with:
           deno-version: 1.5.3
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYYMMDD-HH
-          utcOffset: "+01:00"
       - name: Create dir with files in repo
         env:
           SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
-        run: yarn loadChallenge --year ${{ github.event.inputs.year }} --day ${{ ${{ github.event.inputs.day }} }} --partTwo
+        run: yarn loadChallenge --year ${{ steps.current-time.outputs.year }} --day ${{ steps.current-time.outputs.day }} --partTwo
       - run: |
           git config user.name NiewView
           git config user.email tom.eckardt.it@gmail.com
