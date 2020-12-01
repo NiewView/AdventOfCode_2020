@@ -1,24 +1,37 @@
-export function calculate(mass: number) {
-  const result = Math.floor(mass / 3) - 2;
-  return Math.max(result, 0);
+export function calculate(prices: Array<number>) {
+  for (let i = 0; i < prices.length; i++) {
+    const price1 = prices[i];
+    for (let j = 0; j < prices.length; j++) {
+      const price2 = prices[j];
+      const sum = price1 + price2;
+      if (sum === 2020) {
+        return price1 * price2;
+      }
+    }
+  }
+  // prices.forEach((price1) => {
+  //   prices.forEach((price2) => {
+  //     console.log(sum);
+  //   });
+  // });
 }
 
 export async function challenge1() {
-  const input: string = Deno.readTextFileSync("input.txt");
+  const input: string = Deno.readTextFileSync("./2020/1/input.txt");
   const stringInputArray: Array<string> = input.split("\n");
   const numberInputArray: Array<number> = input
     .split("\n")
     .map((item) => Number(item));
 
-  calculate(numberInputArray[0]);
+  calculate(numberInputArray);
 }
 
 export async function challenge2() {
-  const input: string = Deno.readTextFileSync("input.txt");
+  const input: string = Deno.readTextFileSync("./2020/1/input.txt");
   const stringInputArray: Array<string> = input.split("\n");
   const numberInputArray: Array<number> = input
     .split("\n")
     .map((item) => Number(item));
 
-  return calculate(numberInputArray[0]);
+  return calculate(numberInputArray);
 }

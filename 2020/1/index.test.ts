@@ -5,9 +5,6 @@ import {
 
 import { calculate } from "./index.ts";
 
-Deno.test("test fuel calculation for single item", () => {
-  assertEquals(calculate(12), 2);
-  assertEquals(calculate(14), 2);
-  assertEquals(calculate(1969), 654);
-  assertEquals(calculate(100756), 33583);
+Deno.test("test price calculation", () => {
+  assertEquals(calculate([1721, 979, 366, 299, 675, 1456]), 514579);
 });
