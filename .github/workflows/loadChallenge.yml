@@ -7,7 +7,7 @@ name: Load Challenge
 
 on:
   schedule:
-    - cron: "1 8 1-24 12 *"
+    - cron: "1 6 1-24 12 *"
 
 jobs:
   test:

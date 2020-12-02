@@ -3,11 +3,10 @@ import {
   assertEquals,
 } from "https://deno.land/std@0.78.0/testing/asserts.ts";
 
-import { calculate } from "./index.ts";
+import { isPasswordValid } from "./index.ts";
 
-Deno.test("test fuel calculation for single item", () => {
-  assertEquals(calculate(12), 2);
-  assertEquals(calculate(14), 2);
-  assertEquals(calculate(1969), 654);
-  assertEquals(calculate(100756), 33583);
+Deno.test("validate example passwords", () => {
+  assertEquals(isPasswordValid("1-3 a: abcde"), true);
+  assertEquals(isPasswordValid("1-3 b: cdefg"), false);
+  assertEquals(isPasswordValid("2-9 c: cccccccc"), true);
 });
