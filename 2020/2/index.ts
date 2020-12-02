@@ -3,15 +3,37 @@ export function isPasswordValid(input: string): boolean {
   const count = parsedInput.password
     .split("")
     .filter((char) => char === parsedInput.letter).length;
-  // const result = Math.floor(mass / 3) - 2;
-  return count <= parsedInput.max && count >= parsedInput.min;
+
+  return count <= parsedInput.secondNumber && count >= parsedInput.firstNumber;
 }
 
 interface ParsedInput {
   password: string;
   letter: string;
-  min: number;
-  max: number;
+  firstNumber: number;
+  secondNumber: number;
+}
+
+export function isPasswordValidWithNewPolicy(input: string): boolean {
+  const parsedInput = parseInput(input);
+  let validChars: number = 0;
+  validChars +=
+    parsedInput.password[parsedInput.firstNumber - 1] === parsedInput.letter
+      ? 1
+      : 0;
+  validChars +=
+    parsedInput.password[parsedInput.secondNumber - 1] === parsedInput.letter
+      ? 1
+      : 0;
+
+  return validChars === 1;
+}
+
+interface ParsedInput {
+  password: string;
+  letter: string;
+  firstNumber: number;
+  secondNumber: number;
 }
 
 function parseInput(input: string): ParsedInput {
@@ -23,15 +45,18 @@ function parseInput(input: string): ParsedInput {
   return {
     password: input.match(regexPwd)![1],
     letter: input.match(regexLetter)![1],
-    min: Number(input.match(regexMin)![1]),
-    max: Number(input.match(regexMax)![1]),
+    firstNumber: Number(input.match(regexMin)![1]),
+    secondNumber: Number(input.match(regexMax)![1]),
   };
 }
 
-export function countValidPasswords(inputs: Array<string>) {
+export function countValidPasswords(
+  inputs: Array<string>,
+  policy: (input: string) => boolean
+) {
   let validCount = 0;
   inputs.forEach((input) => {
-    if (isPasswordValid(input)) {
+    if (policy(input)) {
       validCount += 1;
     }
   });
@@ -45,7 +70,7 @@ export async function challenge1() {
     .split("\n")
     .map((item) => Number(item));
 
-  return countValidPasswords(stringInputArray);
+  return countValidPasswords(stringInputArray, isPasswordValid);
 }
 
 export async function challenge2() {
@@ -55,5 +80,5 @@ export async function challenge2() {
     .split("\n")
     .map((item) => Number(item));
 
-  // return calculate(numberInputArray[0]);
+  return countValidPasswords(stringInputArray, isPasswordValidWithNewPolicy);
 }
