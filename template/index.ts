@@ -10,7 +10,7 @@ export async function challenge1() {
     .split("\n")
     .map((item) => Number(item));
 
-  calculate(numberInputArray[0]);
+  return calculate(numberInputArray[0]);
 }
 
 export async function challenge2() {
