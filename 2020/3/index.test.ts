@@ -3,7 +3,11 @@ import {
   assertEquals,
 } from "https://deno.land/std@0.78.0/testing/asserts.ts";
 
-import { countTreeCrashs, isTree } from "./index.ts";
+import {
+  countTreeCrashs,
+  isTree,
+  multiplyTreeCountsForSteps,
+} from "./index.ts";
 
 const treeStringPattern = [
   "..##.......",
@@ -37,4 +41,21 @@ Deno.test("is there a tree at the current position", () => {
 
 Deno.test("test tree crash count", () => {
   assertEquals(countTreeCrashs(treeStringPattern, [0, 0], [3, 1]), 7);
+});
+
+Deno.test("test tree crash count product", () => {
+  assertEquals(
+    multiplyTreeCountsForSteps(
+      treeStringPattern,
+      [0, 0],
+      [
+        [1, 1],
+        [3, 1],
+        [5, 1],
+        [7, 1],
+        [1, 2],
+      ]
+    ),
+    336
+  );
 });
