@@ -3,8 +3,37 @@ export function calculate(mass: number) {
   return Math.max(result, 0);
 }
 
+export function calculateSeatId(input: string) {
+  const { row, column } = splitAndConvertToBinary(input);
+  const seatId =
+    parseBinaryInputToNumber(row) * 8 + parseBinaryInputToNumber(column);
+  return seatId;
+}
+
+export function parseBinaryInputToNumber(binaryString: string) {
+  return parseInt(binaryString, 2);
+}
+
+export function splitAndConvertToBinary(input: string) {
+  const row = input
+    .match(/([FB]+)/)![1]
+    .replace(/B/g, "1")
+    .replace(/F/g, "0");
+  const column = input
+    .match(/([RL]+)/)![1]
+    .replace(/R/g, "1")
+    .replace(/L/g, "0");
+
+  return { row, column };
+}
+
+export function getHighestSeatId(input: Array<string>) {
+  const seatIds = input.map((input) => calculateSeatId(input));
+  return Math.max(...seatIds);
+}
+
 export async function challenge1() {
-  const input: string = Deno.readTextFileSync("./2020/1/input.txt").replace(
+  const input: string = Deno.readTextFileSync("./2020/5/input.txt").replace(
     /\r/g,
     ""
   );
@@ -13,11 +42,11 @@ export async function challenge1() {
     .split("\n")
     .map((item) => Number(item));
 
-  return calculate(numberInputArray[0]);
+  return getHighestSeatId(stringInputArray);
 }
 
 export async function challenge2() {
-  const input: string = Deno.readTextFileSync("./2020/1/input.txt").replace(
+  const input: string = Deno.readTextFileSync("./2020/5/input.txt").replace(
     /\r/g,
     ""
   );
