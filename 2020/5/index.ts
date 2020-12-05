@@ -38,15 +38,9 @@ export function getYourSeatId(input: Array<string>) {
     .sort(function (a, b) {
       return a - b;
     });
+
   for (let i = 0; i < seatIds.length; i++) {
     const seatId = seatIds[i];
-    // if (seatId + 1 === seatIds[i + 1]) {
-    //   console.log("1 Unterschied", seatId);
-    // }
-    // if (seatId + 2 === seatIds[i + 1]) {
-    //   console.log("2 Unterschied", seatId);
-    // }
-
     if (seatIds.includes(seatId + 16) && !seatIds.includes(seatId + 8)) {
       return seatId + 8;
     }
